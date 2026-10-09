@@ -2,19 +2,27 @@
 
 ## Task and candidate states
 
-All experiments use LIBERO Spatial task 0: pick up the black bowl between the plate and the ramekin and place it on the plate. Initial-state IDs denote scene configurations of this task.
+All experiments use LIBERO Spatial task 0: pick up the black bowl between the plate and the ramekin and place it on the plate. Initial-state numbers denote scene configurations of this task.
 
-Two controlled interventions create recovery starts. A missed grasp is verified by an empty rising gripper, negligible bowl motion and no bilateral hold. A dropped object requires a confirmed hold before release, loss of bilateral contact and a measured fall before task completion. These labels use privileged simulator geometry and contacts.
+Controlled interventions create two types of recovery state. A missed grasp is recorded when the empty gripper rises while the bowl stays on the table. A dropped object is recorded when the robot holds the bowl, loses contact after forced release, and the bowl falls before the task is complete. Object positions and gripper contacts from the simulator are used to verify these events.
 
-Action prefixes are replayed in fresh environments. Simulator state, actuator control and observations are checked against the recorded start. Expert observations precede their paired actions. Control runs at 20 Hz; the gallery shows simulation time.
+To reproduce a recovery start, a new environment is initialized with the same starting arrangement and the recorded actions leading to the intervention are replayed. The resulting simulator state, actuator commands and observations are compared with the saved snapshot of that recovery start. Expert data pair the observation before each action with that action. Control runs at 20 Hz, so one action corresponds to 0.05 seconds of simulation time.
 
-## VLA selection
+## VLA features
 
-The frozen pi0-FAST LIBERO policy supplies per-token aleatoric uncertainty, epistemic uncertainty, entropy and chosen-token log probability. A Strong help classifier is trained on human labels of progress over the current five-action prefix. A help label does not mean that the whole episode must eventually fail. Unknown labels are excluded.
+The pi0-FAST LIBERO policy is used without changing its weights. Its token predictions are used to compute four features: aleatoric uncertainty, epistemic uncertainty, entropy and the log probability of the chosen token.
 
-Measured detector splits use initial configurations 0–3 for training, 10–11 for validation and 15–17 for testing. Validation selects the checkpoint and decision threshold. The test has 42 labeled queries from three configurations; queries from the same configuration are correlated.
+The help detector uses the Strong classifier architecture from the INSIGHT paper. The classifier is trained for this project on manually annotated data. Each sample contains five executed actions (approximately 0.25 seconds) and is labeled as useful progress, error/no progress, or uncertain. These become continue, help and unknown labels. Unknown labels were excluded from training and evaluation.
 
-Selection uses eight verified candidates from configurations 20–23, a budget of two requested starts and seed 0:
+| Dataset | Initial-state numbers | Continue | Help | Labeled samples used |
+|---|---|---:|---:|---:|
+| Training | 0–3 | 42 | 15 | 57 |
+| Validation | 10–11 | 16 | 12 | 28 |
+| Test | 15–17 | 26 | 16 | 42 |
+
+Validation is used to select the classifier checkpoint and the threshold for requesting help. The test set is used only to evaluate the selected classifier. Samples from the same starting arrangement are correlated.
+
+The candidate pool contains eight verified recovery starts: one missed-grasp state and one dropped-object state for each of initial-state numbers 20–23. Each selector requests two starts from this pool, using seed 0 where random sampling is required:
 
 - INSIGHT-style selection takes the highest first-query Strong logits. This adapts the help detector to offline ranking.
 - F_geometry allocates one request to each failure type, with seeded selection within each type.
@@ -24,12 +32,12 @@ A fixed scripted operational-space controller provides expert continuations. The
 
 ## ACT pilot
 
-The earlier ACT experiment uses disagreement between three nominal ACT models as its uncertainty baseline. Each adapted policy receives two successful recovery demonstrations and the same initial checkpoint, normalization and training recipe: 1,000 updates, learning rate 1e-5 and seed 0, with nominal-data replay. Deployment replans after each action.
+The earlier ACT (Action Chunking with Transformers) experiment uses disagreement between three nominal ACT models as its uncertainty baseline. Each adapted policy receives two successful recovery demonstrations and the same initial checkpoint, normalization and training recipe: 1,000 updates, learning rate 1e-5 and seed 0, with nominal-data replay. Deployment replans after each action.
 
 All policies are evaluated on the same 15 reserved recovery starts and ten ordinary initial configurations. This is a single-task, single-seed pilot.
 
 ## Scope
 
-VLA detection and expert acquisition have been measured. VLA adaptation on the selected demonstrations and an independent comparison of adapted VLA policies have not been completed. The ACT and VLA results are reported separately.
+Help detection, candidate selection and expert demonstration collection have been evaluated. VLA adaptation on the selected demonstrations and an independent comparison of adapted VLA policies have not been completed. The ACT and VLA results are reported separately.
 
 Software: [LIBERO](https://github.com/Lifelong-Robot-Learning/LIBERO), [LeRobot](https://github.com/huggingface/lerobot), [OpenPI](https://github.com/Physical-Intelligence/openpi).
