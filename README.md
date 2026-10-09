@@ -4,16 +4,6 @@ This project studies how to choose recovery demonstrations after a failed grasp 
 
 ![Selected recovery demonstrations](assets/recovery-grid.gif)
 
-## Experiment
-
-The experiments use a Panda manipulator in LIBERO Spatial. The robot must pick up a specified black bowl and place it on a plate. Controlled interventions create missed grasps and dropped objects; motion and contact checks verify each failure before adding the state to the candidate pool.
-
-Three selection methods request demonstrations from the same pool:
-
-- **INSIGHT-style selection** ranks states using a help classifier trained on token uncertainty features from a frozen pi0-FAST policy.
-- **Failure-type selection** chooses states from both failure types, using simulator geometry and gripper contacts.
-- **Random selection** samples states without replacement.
-
 ## Open problem
 
 Uncertainty-based methods can identify states in which a VLA policy is likely
@@ -35,6 +25,17 @@ procedure, failure-type-based selection will achieve higher recovery success
 on held-out recovery states than uncertainty-based selection. The improvement
 is expected to be especially visible in macro-averaged recovery success across
 different failure types.
+
+
+## Experiment
+
+The experiments use a Panda manipulator in LIBERO Spatial. The robot must pick up a specified black bowl and place it on a plate. Controlled interventions create missed grasps and dropped objects; motion and contact checks verify each failure before adding the state to the candidate pool.
+
+Three selection methods request demonstrations from the same pool:
+
+- **INSIGHT-style selection** ranks states using a help classifier trained on token uncertainty features from a frozen pi0-FAST policy.
+- **Failure-type selection** chooses states from both failure types, using simulator geometry and gripper contacts.
+- **Random selection** samples states without replacement.
 
 ## Results so far
 
