@@ -11,10 +11,8 @@ The experiments use a Panda manipulator in LIBERO Spatial. The robot must pick u
 Three selection methods request demonstrations from the same pool:
 
 - **INSIGHT-style selection** ranks states using a help classifier trained on token uncertainty features from a frozen pi0-FAST policy.
-- **Failure-type selection (F_geometry)** chooses states from both failure types, using simulator geometry and gripper contacts.
+- **Failure-type selection** chooses states from both failure types, using simulator geometry and gripper contacts.
 - **Random selection** samples states without replacement.
-
-The videos show a fixed scripted expert continuing from the selected states. Shared states use the same recording. Success is checked by the LIBERO task predicate.
 
 ## Results so far
 
