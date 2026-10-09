@@ -14,14 +14,6 @@ The pi0-FAST LIBERO policy is used without changing its weights. Its token predi
 
 The help detector uses the Strong classifier architecture from the INSIGHT paper. The classifier is trained for this project on manually annotated data. Each sample contains five executed actions (approximately 0.25 seconds) and is labeled as useful progress, error/no progress, or uncertain. These become continue, help and unknown labels. Unknown labels were excluded from training and evaluation.
 
-| Dataset | Initial-state numbers | Continue | Help | Labeled samples used |
-|---|---|---:|---:|---:|
-| Training | 0–3 | 42 | 15 | 57 |
-| Validation | 10–11 | 16 | 12 | 28 |
-| Test | 15–17 | 26 | 16 | 42 |
-
-Validation is used to select the classifier checkpoint and the threshold for requesting help. The test set is used only to evaluate the selected classifier. Samples from the same starting arrangement are correlated.
-
 The candidate pool contains eight verified recovery starts: one missed-grasp state and one dropped-object state for each of initial-state numbers 20–23. Each selector requests two starts from this pool, using seed 0 where random sampling is required:
 
 - INSIGHT-style selection takes the highest first-query Strong logits. This adapts the help detector to offline ranking.
