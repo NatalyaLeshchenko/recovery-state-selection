@@ -14,8 +14,6 @@ Three selection methods request demonstrations from the same pool:
 - **Failure-type selection** chooses states from both failure types, using simulator geometry and gripper contacts.
 - **Random selection** samples states without replacement.
 
-The videos show a fixed scripted expert continuing from the selected states. Shared states use the same recording. Success is checked by the LIBERO task predicate.
-
 ## Results so far
 
 A separate ACT pilot tested adaptation with two successful recovery demonstrations per method. Its uncertainty baseline used ensemble disagreement. On 15 reserved recovery starts, the initial policy succeeded in 14 cases, uncertainty selection and failure-type selection in 12 each, and random selection in 13. This pilot did not show a benefit from recovery fine-tuning or an advantage of failure-type selection over uncertainty.
