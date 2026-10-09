@@ -1,4 +1,4 @@
-# Recovery State Selection for Robotic Manipulation
+# Recovery State Selection for Vision-Language-Action Models
 
 This project studies how to choose recovery demonstrations after a failed grasp or a dropped object. The main question is whether covering different failure types improves recovery more than selecting states by model uncertainty, given the same demonstration budget.
 
