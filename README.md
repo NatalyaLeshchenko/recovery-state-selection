@@ -14,6 +14,28 @@ Three selection methods request demonstrations from the same pool:
 - **Failure-type selection** chooses states from both failure types, using simulator geometry and gripper contacts.
 - **Random selection** samples states without replacement.
 
+## Open problem
+
+Uncertainty-based methods can identify states in which a VLA policy is likely
+to require assistance. However, uncertainty alone does not indicate which
+failure modes should be covered by a limited number of recovery demonstrations.
+It therefore remains unclear whether semantic failure-type information can
+improve recovery-data selection beyond model uncertainty and random sampling.
+
+## Research question
+
+Given the same budget of recovery demonstrations, does selecting recovery
+states by failure type improve VLA recovery success more than selecting them
+by model uncertainty?
+
+## Hypothesis
+
+At a fixed recovery-demonstration budget and under the same policy-adaptation
+procedure, failure-type-based selection will achieve higher recovery success
+on held-out recovery states than uncertainty-based selection. The improvement
+is expected to be especially visible in macro-averaged recovery success across
+different failure types.
+
 ## Results so far
 
 A separate ACT pilot tested adaptation with two successful recovery demonstrations per method. Its uncertainty baseline used ensemble disagreement. On 15 reserved recovery starts, the initial policy succeeded in 14 cases, uncertainty selection and failure-type selection in 12 each, and random selection in 13. This pilot did not show a benefit from recovery fine-tuning or an advantage of failure-type selection over uncertainty.
