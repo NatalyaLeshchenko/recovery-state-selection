@@ -1,0 +1,42 @@
+{
+  "protocol": {
+    "collection_protocol_version": 2,
+    "suite": "libero_spatial",
+    "task_id": 0,
+    "seed": 0,
+    "n_action_steps": 1,
+    "control_frequency_hz": 20,
+    "nominal_horizon_steps": 280,
+    "recovery_horizon_steps": 280,
+    "test_split_scope": "Held out from this selection/training experiment; may be familiar from nominal D0",
+    "history_observations": 48,
+    "held_min_bowl_rise_m": 0.02,
+    "held_consecutive_observations": 3,
+    "lift_threshold_m": 0.06,
+    "drop_threshold_m": 0.03,
+    "open_steps": 12,
+    "miss_trigger_distance_m": 0.1,
+    "close_command_threshold": 0.5,
+    "miss_max_bowl_rise_m": 0.015,
+    "miss_min_empty_lift_m": 0.035,
+    "miss_max_bowl_shift_m": 0.03,
+    "miss_lift_action": 0.35,
+    "miss_lift_steps": 24,
+    "collection_rule": "First eligible event per requested layout and intervention type; no uncertainty or recovery-outcome filtering",
+    "scope": "Single-task induced-error collection/development pool; ACT proxy; not INSIGHT, VLA, or a test set",
+    "label_definitions": {
+      "missed_grasp": "Policy close command near target; closure blocked; no established prior lifted hold; empty lift and bowl remains on table",
+      "object_dropped": "Consecutive bilateral finger contact while target lifted; forced open before goal; target falls >=3cm and bilateral hold lost"
+    },
+    "attempts": [],
+    "cases": [],
+    "complete": false
+  },
+  "selection_notes": {
+    "scope": "Initial candidate query plan; not collected demonstrations or measured recovery success",
+    "quota_rule": "Repeatedly add one slot to a least-filled nonempty group; seeded ties; exhausted groups skipped",
+    "collection_rule": "U/Random advance their fixed order after failed attempts. F_ref tries the next candidate in the same type; if exhausted, redistribute unfilled slots by the same quota rule among remaining available groups. Record every attempt. Stop only after B accepted successes, or report an unmet budget.",
+    "training_rule": "All future variants start from the fixed initial ACT; same training parameters and replay. No old recovery-adapted weights.",
+    "evaluation_rule": "Use independent common test starts, never states in this collection pool."
+  }
+}
